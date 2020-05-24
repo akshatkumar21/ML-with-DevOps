@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# ### Let's construct LeNet in Keras!
-# 
-# #### First let's load and prep our MNIST data
+# In[1]:
 
 
 from keras.preprocessing.image import ImageDataGenerator
@@ -48,23 +46,47 @@ num_classes = y_test.shape[1]
 num_pixels = x_train.shape[1] * x_train.shape[2]
 
 
-# ### Now let's create our layers to replicate LeNet
+# In[19]:
+
+
+file = open("input.txt","r")  
+
+build=int(file.readline()) 
+ 
+layer=int(file.readline()) 
+
+pool=int(file.readline()) 
+
+stride=int(file.readline()) 
+
+epoch=int(file.readline())
+
+line1=file.readline()
+
+line2=file.readline()
+
+line3=file.readline()
+
+file.close()
+
+
+# In[20]:
 
 
 # create model
 model = Sequential()
 
 # 2 sets of CRP (Convolution, RELU, Pooling)
-model.add(Conv2D(20, (5, 5),
+model.add(Conv2D(layer, (5, 5),
                  padding = "same", 
                  input_shape = input_shape))
 model.add(Activation("relu"))
-model.add(MaxPooling2D(pool_size = (2, 2), strides = (2, 2)))
+model.add(MaxPooling2D(pool_size = (pool, pool), strides = (stride, stride)))
 
-model.add(Conv2D(50, (5, 5),
-                 padding = "same"))
-model.add(Activation("relu"))
-model.add(MaxPooling2D(pool_size = (2, 2), strides = (2, 2)))
+#convolutional layer
+line1
+line2
+line3
 
 # Fully connected layers (w/ RELU)
 model.add(Flatten())
@@ -82,12 +104,12 @@ model.compile(loss = 'categorical_crossentropy',
 print(model.summary())
 
 
-# ### Now let us train LeNet on our MNIST Dataset
+# In[21]:
 
 
 # Training Parameters
 batch_size = 128
-epochs = 3
+epochs = epoch
 
 history = model.fit(x_train, y_train,
           batch_size=batch_size,
@@ -101,3 +123,18 @@ model.save("mnist_LeNet.h5")
 scores = model.evaluate(x_test, y_test, verbose=1)
 print('Test loss:', scores[0])
 print('Test accuracy:', scores[1])
+
+
+# In[25]:
+
+
+file1=open("accuracy.txt","w")
+file1.write(str(scores[1]))
+file1.close()
+
+
+# In[ ]:
+
+
+
+
